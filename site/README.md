@@ -23,6 +23,7 @@ browsers block module scripts on `file://`.)
 | `style.css` | All styling: notepad, flat-lay desk, phone screens, scrapbook pages |
 | `layout.js` | Where everything sits on the desk (`L`, plus the extra props in `FILL`) and each shot's camera framing (`BOX`) |
 | `flat.js` | Builds the 2D desk and the sample scrapbook pages |
+| `film.js` | The camera's two film looks (B&W 400 and Color Print 200), ported from the app's `FilmFilterPipeline`; runs on WebGL, with a canvas fallback |
 | `main.js` | The scroll timeline: which shot, camera moves, what happens on the desk |
 | `assets/img/` | Web-sized assets exported from Figma (WebP), and the full-desk still used for reduced motion. `roll-*` = the Create Roll screen, `ipad-screen` + `tray-*` = the iPad canvas (both from Figma), `tb-*` = the toolbox and its tools, `cam-body.jpg` + `can-*.png` = the app's camera screen and film canisters, `join-*` + `lobby-deco.webp` = the Join Roll illustration and lobby header (all from the app's asset catalog), `avatar-*` = lobby avatars cropped from an app screenshot |
 | `share.jpg` | Link preview image (og:image) |

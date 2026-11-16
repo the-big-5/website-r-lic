@@ -1,5 +1,6 @@
 // The 2D flat-lay desk, drawn from the Figma assets.
 import { AW, AH, L, FILL, OY } from './layout.js';
+import { develop } from './film.js';
 
 const CODE = 'N4B13L';
 
@@ -377,49 +378,14 @@ function buildTogether(add, pages) {
 
 /* ---------- the camera: tap it, it turns over into the app's camera, try both films ---------- */
 // The back is the app's camera screen (CaptureSessionView): an 874 × 402 canvas, viewfinder 424 × 318 in a 444 × 337 bezel.
-// Both films are the app's own looks (FilmFilterPipeline): B&W 400 = photo-effect noir, Color Print 200 = the Digicam grade.
+// Both films are the app's own looks (FilmFilterPipeline), drawn by film.js: B&W 400 = photo-effect noir, Color Print 200 = the Digicam look.
 const FILMS = {
   bw: { name: 'PRO 35 B&W 400', cap: 'pro 35 b&w 400', can: 'can-bw.png' },
   color: { name: 'COLOR PRINT 200', cap: 'color print 200', can: 'can-color.png' },
 };
 const SCENES = ['photo-03', 'photo-05', 'photo-07'];
-const SRC_W = 800, SRC_H = 600;                       // each sample photo is graded once at this size
+const SRC_W = 800, SRC_H = 600;                       // a print made from a sample photo
 const PRINT_SPOTS = [[-30, 300, -6], [150, 330, 4], [300, 280, -3]];   // where prints land, from the camera's centre
-
-// Digicam grade (DigicamGrade.swift): −0.6 EV in linear light, S-curve 0.18 around 0.4, warm shadows, saturation 1.2, 0.03–0.9 output
-const DIGI = (() => {
-  const a = new Float32Array(256), gain = 2 ** -0.6;
-  for (let i = 0; i < 256; i++) {
-    let x = i / 255;
-    x = x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
-    x = Math.min(1, x * gain);
-    x = x <= 0.0031308 ? x * 12.92 : 1.055 * x ** (1 / 2.4) - 0.055;
-    a[i] = Math.min(1, Math.max(0, x + 0.18 * Math.sin(Math.PI * x) * (x - 0.4) * 1.6));
-  }
-  return a;
-})();
-const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
-function grade(d, film) {
-  for (let i = 0; i < d.length; i += 4) {
-    if (film === 'bw') {
-      let l = (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255;
-      l = Math.min(1, Math.max(0, 0.5 + (l - 0.52) * 1.45));
-      l = 0.6 * l + 0.4 * l * l * (3 - 2 * l);
-      d[i] = d[i + 1] = d[i + 2] = l * 255;
-    } else {
-      let r = DIGI[d[i]], g = DIGI[d[i + 1]], b = DIGI[d[i + 2]];
-      b *= 0.5 + 0.35 * smooth(0.1, 0.8, 0.2126 * r + 0.7152 * g + 0.0722 * b);
-      const y = 0.2126 * r + 0.7152 * g + 0.0722 * b, c = v => 0.03 + 0.87 * Math.min(1, Math.max(0, y + (v - y) * 1.2));
-      d[i] = c(r) * 255; d[i + 1] = c(g) * 255; d[i + 2] = c(b) * 255;
-    }
-  }
-}
-// CIVignette (intensity 0.5, radius 1.5), drawn over the frame
-function vignette(g, w, h) {
-  const v = g.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.3, w / 2, h / 2, Math.hypot(w, h) * 0.56);
-  v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.42)');
-  g.fillStyle = v; g.fillRect(0, 0, w, h);
-}
 
 const ICON = {
   signal: '<svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>',
@@ -437,7 +403,7 @@ function buildCamera(add, board, go) {
       <img class="cb-body" src="${IMG}cam-body.jpg" alt="" draggable="false">
       <div class="cb-status"><b>9:41</b><i class="cb-island"></i><span>${ICON.signal}${ICON.wifi}<i class="cb-bat"></i></span></div>
       <button class="cb-back" type="button" tabindex="-1" aria-label="Turn the camera back over">${ICON.turn}</button>
-      <div class="cb-bezel"><div class="cb-view"><canvas width="636" height="477"></canvas><i class="cb-vig"></i><i class="cb-flash"></i><b class="cb-name"></b>
+      <div class="cb-bezel"><div class="cb-view"><canvas width="636" height="477"></canvas><i class="cb-flash"></i><b class="cb-name"></b>
         <b class="cb-live">LIVE</b>
         <button class="cb-use" type="button" tabindex="-1">${ICON.cam}<span>Use my camera</span></button>
         <b class="cb-note">No camera access, so here's a sample photo</b></div></div>
@@ -452,52 +418,27 @@ function buildCamera(add, board, go) {
   const back = cam.querySelector('.cam-back'), cv = back.querySelector('canvas'), g = cv.getContext('2d');
   const toggle = back.querySelector('.cb-toggle'), nameTag = back.querySelector('.cb-name'), useBtn = back.querySelector('.cb-use');
   let film = 'bw', scene = 0, stream = null, raf = 0, busy = false, shots = 0, saved = 0;
-  const photos = [], graded = {}, prints = [];
+  const photos = [], prints = [];
 
   function load() {
     if (photos.length) return;
     SCENES.forEach((s, i) => { const im = new Image(); im.decoding = 'async'; im.src = `${IMG}${s}.webp`; photos[i] = im; });
   }
-  // a sample photo as the chosen film sees it; graded once, then kept
-  function source(i, f) {
-    const key = i + f;
-    if (graded[key]) return graded[key];
-    const im = photos[i];
-    if (!im || !im.complete || !im.naturalWidth) return null;
-    const c = document.createElement('canvas'); c.width = SRC_W; c.height = SRC_H;
-    const x = c.getContext('2d', { willReadFrequently: true });
-    const s = Math.max(SRC_W / im.naturalWidth, SRC_H / im.naturalHeight);
-    x.drawImage(im, (SRC_W - im.naturalWidth * s) / 2, (SRC_H - im.naturalHeight * s) / 2, im.naturalWidth * s, im.naturalHeight * s);
-    const px = x.getImageData(0, 0, SRC_W, SRC_H); grade(px.data, f); x.putImageData(px, 0, 0);
-    return (graded[key] = c);
-  }
   // without the visitor's camera the viewfinder holds a still sample photo
   function render() {
     if (stream) return;
-    const src = source(scene, film);
-    if (src) g.drawImage(src, 0, 0, cv.width, cv.height);
-    else if (photos[scene]) photos[scene].addEventListener('load', render, { once: true });
+    const im = photos[scene];
+    if (im && !develop(g, im, film)) im.addEventListener('load', render, { once: true });
   }
 
   /* the visitor's own camera (front camera), only after they press "Use my camera"; nothing leaves the browser */
   const video = document.createElement('video');
   video.muted = true; video.playsInline = true; video.setAttribute('playsinline', '');
-  const live = document.createElement('canvas'); live.width = 480; live.height = 360;
-  const lg = live.getContext('2d', { willReadFrequently: true });
   // one camera frame, cropped to 4:3 and mirrored like a selfie, through the chosen film
-  function frame(x, w, h) {
-    const vw = video.videoWidth, vh = video.videoHeight;
-    if (!vw || !vh) return false;
-    const s = Math.max(w / vw, h / vh);
-    x.save(); x.translate(w, 0); x.scale(-1, 1);
-    x.drawImage(video, (w - vw * s) / 2, (h - vh * s) / 2, vw * s, vh * s);
-    x.restore();
-    const px = x.getImageData(0, 0, w, h); grade(px.data, film); x.putImageData(px, 0, 0);
-    return true;
-  }
+  const frame = x => develop(x, video, film, { mirror: true });
   function loop() {
     if (!stream) { raf = 0; return; }
-    if (frame(lg, live.width, live.height)) g.drawImage(live, 0, 0, cv.width, cv.height);
+    frame(g);
     raf = requestAnimationFrame(loop);
   }
   async function startCamera() {
@@ -533,16 +474,10 @@ function buildCamera(add, board, go) {
   }
   function shoot() {
     if (busy) return;
-    const out = document.createElement('canvas'), o = out.getContext('2d', { willReadFrequently: true });
-    if (stream) {
-      out.width = 960; out.height = 720;
-      if (!frame(o, out.width, out.height)) return;
-    } else {
-      const src = source(scene, film);
-      if (!src) return;
-      out.width = SRC_W; out.height = SRC_H; o.drawImage(src, 0, 0);
-    }
-    if (film === 'color') vignette(o, out.width, out.height);
+    const out = document.createElement('canvas');
+    [out.width, out.height] = stream ? [960, 720] : [SRC_W, SRC_H];
+    const o = out.getContext('2d', { willReadFrequently: true });
+    if (!(stream ? frame(o) : develop(o, photos[scene] || {}, film))) return;
     busy = true;
     back.classList.remove('fire'); void back.offsetWidth; back.classList.add('fire');
     const f = film;

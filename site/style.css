@@ -451,8 +451,6 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 5px 10px rgba(0,0,0,.4)}
 .cb-view{position:absolute;left:10px;top:9.5px;width:424px;height:318px;border-radius:6.2px;overflow:hidden;background:#1C1B1A}
 .cb-view canvas{display:block;width:100%;height:100%}
-.cb-vig{position:absolute;inset:0;background:radial-gradient(ellipse 72% 72% at 50% 50%,transparent 45%,rgba(0,0,0,.42));opacity:0;transition:opacity .3s var(--ease)}
-.cam-back[data-film="color"] .cb-vig{opacity:1}
 .cb-flash{position:absolute;inset:0;background:#fff;opacity:0}
 .cam-back.fire .cb-flash{animation:vfFlash .55s ease-out}
 @keyframes vfFlash{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
