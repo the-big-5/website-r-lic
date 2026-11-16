@@ -86,11 +86,7 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 .phone[data-mode="roll"] [data-mode="roll"],.phone[data-mode="create"] [data-mode="create"],.phone[data-mode="join"] [data-mode="join"],.phone[data-mode="room"] [data-mode="room"],
 .phone[data-mode="camera"] [data-mode="camera"],.phone[data-mode="done"] [data-mode="done"]{opacity:1}
 .screen .dark{background:#151311}
-.ph-h{font:800 22px var(--f-display);letter-spacing:-.02em}
 .screen small{font:500 11px var(--f-body);color:var(--ink-2)}
-.ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.ph-grid i{aspect-ratio:1;background:var(--c);border-radius:2px}
-.ph-grid.big i{border-radius:3px}
 /* create roll: the Figma screen, with the typing, the pick and the tap laid over it */
 .screen .ph-fig{padding:0;display:block}
 .ph-figimg{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -558,3 +554,20 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
   font:600 calc(11*var(--fp))/calc(17*var(--fp)) var(--f-ios);font-style:normal;text-align:center}
 .pl-search{right:calc(20*var(--fp));bottom:calc(20*var(--fp));width:calc(58*var(--fp));height:calc(58*var(--fp));border-radius:50%;background:rgba(255,255,255,.72);color:#111}
 .pl-search svg{width:calc(24*var(--fp));height:calc(24*var(--fp))}
+
+/* the roll, developed: the app's Reveal screen. Photos fly out of the middle onto the mat, then Start Scrapbook */
+.screen .ph-reveal{padding:0;display:block;background:#C9A57C url(assets/img/reveal-wood.webp) center/cover;--f-ios:-apple-system,"SF Pro Text",system-ui,"Schibsted Grotesk",sans-serif}
+.rv-mat{position:absolute;left:calc(-12*var(--fp));right:calc(-12*var(--fp));top:calc(218*var(--fp));height:calc(428*var(--fp));background-color:var(--mat);
+  background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:calc(52*var(--fp)) calc(52*var(--fp)),calc(52*var(--fp)) calc(52*var(--fp)),calc(13*var(--fp)) calc(13*var(--fp)),calc(13*var(--fp)) calc(13*var(--fp));
+  background-position:calc(-7*var(--fp)) calc(26*var(--fp));box-shadow:0 calc(3*var(--fp)) calc(10*var(--fp)) rgba(0,0,0,.25)}
+.rv-mat b{position:absolute;left:calc(-35*var(--fp));white-space:nowrap;font:500 calc(15*var(--fp))/1 var(--f-ios);color:rgba(255,255,255,.75);word-spacing:calc(41*var(--fp))}
+.rv-mat b:first-child{top:calc(12*var(--fp))}
+.rv-mat b:last-child{bottom:calc(10*var(--fp));left:calc(-10*var(--fp))}
+.rv-photo{position:absolute;left:calc(var(--x)*var(--fp));top:calc(var(--y)*var(--fp));width:calc(var(--pw)*var(--fp));height:calc(var(--ph)*var(--fp));object-fit:cover;
+  border-radius:calc(2*var(--fp));box-shadow:0 0 0 calc(1.5*var(--fp)) #fff,0 calc(3*var(--fp)) calc(8*var(--fp)) rgba(20,36,20,.38);transform:translate(-50%,-50%) rotate(var(--r))}
+.rv-btn{position:absolute;left:calc(22*var(--fp));right:calc(22*var(--fp));top:calc(794*var(--fp));height:calc(50*var(--fp));border-radius:99px;background:#282420;color:#fff;text-align:center;font:600 calc(18*var(--fp))/calc(50*var(--fp)) var(--f-ios)}
+.phone[data-mode="done"] .rv-photo{animation:rvFly .6s cubic-bezier(.3,1.25,.5,1) calc(.25s + var(--i) * .07s) both}
+@keyframes rvFly{from{transform:translate(-50%,-50%) translate(calc((201 - var(--x)) * var(--fp)),calc((450 - var(--y)) * var(--fp))) scale(.4);opacity:0}20%{opacity:1}}
+.phone[data-mode="done"] .rv-btn{animation:fadeUp .45s var(--ease) 1.3s both}

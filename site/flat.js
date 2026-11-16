@@ -118,7 +118,8 @@ export function buildFlat(board, { go = () => {} } = {}) {
           `<figure>${a.length > 1 ? `<img src="${IMG}avatar-${a}.webp" alt="" draggable="false">` : `<span class="lb-init${a === 'S' ? ' dark' : ''}">${a}</span>`}<figcaption><b>${n}</b>${tag ? `<small>(${tag})</small>` : ''}</figcaption></figure>`).join('')}</div>
         <p class="lb-wait">Waiting for the host to start...</p></section>
       <section data-mode="camera" class="dark"><div class="ph-view"></div><span class="ph-shutter"></span></section>
-      <section data-mode="done"><b class="ph-h">Developed!</b><small>36 photos · 5 friends</small><div class="ph-grid big">${Array.from({ length: 9 }, (_, i) => `<i style="--c:${['#9DB4C0', '#C9A27E', '#A6B58C', '#C98B6B', '#7FA38A', '#D8B25A'][i % 6]}"></i>`).join('')}</div></section>
+      <section data-mode="done" class="ph-reveal"><i class="rv-mat"><b>1 2 3 4 5 6 7 8</b><b>4 5 6 7 8 9 10 11</b></i>
+        ${revealPhotos()}<span class="rv-btn">Start Scrapbook</span></section>
     </div>`;
 
   /* ---------- shot 2: a pile of prints spills out of the phone; you can push them around ---------- */
@@ -200,6 +201,27 @@ export function buildFlat(board, { go = () => {} } = {}) {
     },
     spreadCount: 4,
   };
+}
+
+/* ---------- the roll, developed: the app's Reveal screen (RollRevealView), photos scattered over the mat ---------- */
+// Same layout rule as RollRevealViewModel.scatterLayout: 3 columns, one jittered cell per photo in shuffled order,
+// up to 14° of tilt (photos 182 pt on the long side here, a bit bigger than the app’s 150 so 10 photos fill the mat), inside 30 pt sides / 110 pt top / 120 pt bottom of a 402 × 874 screen.
+const REVEAL = [['photo-01', 1050, 1400], ['photo-02', 1400, 933], ['photo-03', 1400, 1050], ['photo-04', 933, 1400], ['photo-05', 1400, 1051],
+  ['photo-06', 1400, 788], ['photo-07', 1400, 788], ['photo-08', 1400, 788], ['photo-09', 384, 512], ['photo-10', 252, 448]];
+function revealPhotos() {
+  const W = 402, H = 874, side = 30, top = 110, bottom = 120, n = REVEAL.length;
+  const cols = 3, rows = Math.ceil(n / cols), cw = (W - side * 2) / cols, ch = (H - top - bottom) / rows;
+  let seed = 7;   // a fixed seed, so the layout is the same on every visit
+  const rnd = () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const cells = [...Array(cols * rows).keys()];
+  for (let i = cells.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [cells[i], cells[j]] = [cells[j], cells[i]]; }
+  return REVEAL.map(([p, w, h], i) => {
+    const c = cells[i];
+    const x = Math.min(W - side, Math.max(side, side + (c % cols + 0.5) * cw + (rnd() - 0.5) * cw * 0.6));
+    const y = Math.min(H - bottom, Math.max(top, top + (Math.floor(c / cols) + 0.5) * ch + (rnd() - 0.5) * ch * 0.6));
+    const r = (rnd() * 2 - 1) * 14, a = w / h, L = 182, pw = a >= 1 ? L : L * a, ph = a >= 1 ? L / a : L;
+    return `<img class="rv-photo" src="${IMG}${p}.webp" alt="" draggable="false" style="--x:${x.toFixed(1)};--y:${y.toFixed(1)};--pw:${pw.toFixed(1)};--ph:${ph.toFixed(1)};--r:${r.toFixed(1)}deg;--i:${i}">`;
+  }).join('');
 }
 
 /* ---------- the phone's camera roll: the iPhone Photos app, Library tab (iOS 26), on the team's photos ---------- */
