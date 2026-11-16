@@ -102,10 +102,20 @@ export function buildFlat(board, { go = () => {} } = {}) {
         <span class="cr-name"><span class="typed">Bali '27</span></span>
         <img class="cr-chip c24" src="${IMG}roll-chip24.webp" alt="" draggable="false"><img class="cr-chip c36" src="${IMG}roll-chip36.webp" alt="" draggable="false">
         <span class="cr-press"></span><span class="cr-tap"></span></section>
-      <section data-mode="room" class="ph-room"><span class="rm-back"></span><b class="rm-title">Bali '27</b><small class="rm-sub">36 shots · share the code so friends can join</small>
-        <p class="rm-label">Roll code</p><div class="rm-code">${CODE.split('').map((c, i) => `<span style="--i:${i}"><i>${'X7QK2RD9M5PZ'[i * 2]}</i><i>${'X7QK2RD9M5PZ'[i * 2 + 1]}</i><i>${'HUVW8T3EJ6YF'[i]}</i><i>${c}</i></span>`).join('')}</div>
-        <p class="rm-label">In this roll</p><div class="rm-friends">${[['photo-05', 'you'], ['photo-10', 'leps'], ['photo-09', 'chang'], ['photo-03', 'biel']].map(([p, n], i) => `<figure style="--i:${i}"><img src="${IMG}${p}.webp" alt="" draggable="false"><figcaption>${n}</figcaption></figure>`).join('')}</div>
-        <span class="rm-btn">Share code</span></section>
+      <section data-mode="join" class="ph-join"><span class="ph-btn back"></span><b class="jn-title">Join Roll</b>
+        <div class="jn-art"><img class="jn-phones" src="${IMG}join-phones.webp" alt="" draggable="false"><img class="jn-squint" src="${IMG}join-star-squint.webp" alt="" draggable="false"><img class="jn-happy" src="${IMG}join-star-happy.webp" alt="" draggable="false"></div>
+        <p class="jn-air">Turn on AirDrop to accept the invite</p><i class="jn-rule"></i>
+        <p class="jn-label">Enter code</p>
+        <div class="jn-code">${CODE.split('').map((c, i) => `<span style="--i:${i}"><i>${c}</i></span>`).join('')}</div>
+        <span class="jn-btn">Join Roll</span><span class="jn-tap"></span></section>
+      <section data-mode="room" class="ph-lobby"><img class="lb-deco" src="${IMG}lobby-deco.webp" alt="" draggable="false">
+        <span class="ph-btn close"></span><span class="ph-btn more"><i></i></span>
+        <b class="lb-title">Bali '27</b>
+        <p class="lb-meta"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 19.5c.6-3.6 3.2-5.6 6.5-5.6s5.9 2 6.5 5.6z"/><path d="M15.2 4.6a3.6 3.6 0 0 1 0 6.8M17.8 14.3c2 .8 3.3 2.6 3.7 5.2h-3"/></svg><b><span class="lb-n">${[0, 1, 2, 3, 4, 5].map(n => `<i>${n}</i>`).join('')}</span> joined</b></span>
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="13.5" rx="2.5"/><path d="M8 6.5l1.4-2.5h5.2L16 6.5"/><circle cx="12" cy="13" r="3.6"/></svg>24 shots</span></p>
+        <div class="lb-people">${[['nabiel', 'Nabiel', 'Host'], ['lepin', 'Lepin'], ['brian', 'Brian', 'You'], ['F', 'Fikri'], ['S', 'Sanny']].map(([a, n, tag]) =>
+          `<figure>${a.length > 1 ? `<img src="${IMG}avatar-${a}.webp" alt="" draggable="false">` : `<span class="lb-init${a === 'S' ? ' dark' : ''}">${a}</span>`}<figcaption><b>${n}</b>${tag ? `<small>(${tag})</small>` : ''}</figcaption></figure>`).join('')}</div>
+        <p class="lb-wait">Waiting for the host to start...</p></section>
       <section data-mode="camera" class="dark"><div class="ph-view"></div><span class="ph-shutter"></span></section>
       <section data-mode="done"><b class="ph-h">Developed!</b><small>36 photos · 5 friends</small><div class="ph-grid big">${Array.from({ length: 9 }, (_, i) => `<i style="--c:${['#9DB4C0', '#C9A27E', '#A6B58C', '#C98B6B', '#7FA38A', '#D8B25A'][i % 6]}"></i>`).join('')}</div></section>
     </div>`;
@@ -163,9 +173,14 @@ export function buildFlat(board, { go = () => {} } = {}) {
       stagger('spill', s.spill, spill, 110);
       if (last.mode !== s.mode) {
         last.mode = s.mode; phone.dataset.mode = s.mode;
-        // after Next is tapped, the room opens on its own
+        // after Next is tapped, a friend's phone joins with the code, then the lobby fills up
         clearTimeout(phone._t);
-        if (s.mode === 'create') phone._t = setTimeout(() => { if (last.mode === 'create') phone.dataset.mode = 'room'; }, root.classList.contains('snap') ? 0 : 3100);
+        const snap = root.classList.contains('snap');
+        if (s.mode === 'create') phone._t = setTimeout(() => {
+          if (last.mode !== 'create') return;
+          phone.dataset.mode = 'join';
+          phone._t = setTimeout(() => { if (last.mode === 'create') phone.dataset.mode = 'room'; }, snap ? 0 : 2700);
+        }, snap ? 0 : 2400);
       }
       if (last.shot !== s.shot) { last.shot = s.shot; if (s.shot !== 3) cam.close(); }
       if (last.together !== s.together) { last.together = s.together; together.play(s.together); }

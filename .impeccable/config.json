@@ -29,6 +29,15 @@
         ],
         "createdAt": "2026-11-15T14:36:38.700Z",
         "reason": "Claude: labels and boxes inside scaled-down wireframe thumbnails of the planning page, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-16T10:32:57.994Z",
+        "reason": "Claude: same finding already ignored in site/.impeccable for index.html (the full-screen .stage running edge to edge); it resurfaced only because the folder moved to relic-web/site"
       }
     ]
   }
