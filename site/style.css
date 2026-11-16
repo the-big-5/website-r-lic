@@ -235,7 +235,7 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 .hint,.drag-hint{font:500 .8rem var(--f-mono)!important;color:var(--ink-2);letter-spacing:.04em}
 .actions,.flipnav{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 .badge{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:8px 20px 8px 14px;border-radius:12px;background:var(--ink);color:var(--paper);font:600 1.15rem var(--f-body);line-height:1.05;cursor:default}
-.badge small{display:block;font-size:.66rem;font-weight:500;opacity:.8}
+.badge small{display:block;font-size:11px;font-weight:500;opacity:.8}
 .badge svg{width:26px;height:26px;fill:currentColor;flex:none}
 
 .foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding:28px max(24px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px));background:var(--paper);border-top:1px solid var(--line);font-size:.9rem;color:var(--ink-2)}
@@ -255,7 +255,6 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
   .scrawl{font-size:1.75rem!important}
   .scrawl.big{font-size:2.6rem!important}
   .badge{min-height:48px;font-size:1.05rem}
-  .actions .btn,.actions .badge{flex:1 1 100%}
 }
 /* phones: a tighter notepad so the desk gets more of the screen */
 @media (max-width:639px){
@@ -267,12 +266,16 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
   .kicker{font-size:.72rem!important}
   .scrawl{font-size:1.45rem!important}
   .scrawl.big{font-size:2.1rem!important}
-  .badge{min-height:44px}
-  .flipnav .btn,.actions .btn{min-height:44px}
+  .flipnav .btn{min-height:44px}
+  /* the App Store badge and Follow sit side by side, sized to their words */
+  .actions{gap:8px}
+  .badge{min-height:40px;padding:5px 11px 5px 8px;gap:5px;border-radius:10px;font-size:.88rem}
+  .badge small{font-size:11px;letter-spacing:-.01em}
+  .badge svg{width:18px;height:18px}
+  .actions .btn{min-height:40px;padding:0 12px;font-size:.8rem}
 }
 @media (min-width:640px) and (max-width:1099px){
   .pad{right:auto;width:min(600px,calc(100% - 32px))}
-  .actions .btn,.actions .badge{flex:0 1 auto}
   .flipnav .btn{flex:1}
 }
 
