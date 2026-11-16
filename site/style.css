@@ -83,7 +83,7 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 .ph-wifi{width:calc(17*var(--fp));height:calc(12*var(--fp));background:currentColor;clip-path:polygon(50% 100%,0 25%,20% 5%,50% 0,80% 5%,100% 25%)}
 .ph-bat{width:calc(27*var(--fp));height:calc(13*var(--fp));border-radius:calc(4*var(--fp));background:currentColor}
 .screen section{position:absolute;inset:0;padding:42px 14px 22px;display:flex;flex-direction:column;gap:8px;opacity:0;transition:opacity .35s var(--ease)}
-.phone[data-mode="roll"] [data-mode="roll"],.phone[data-mode="create"] [data-mode="create"],.phone[data-mode="join"] [data-mode="join"],.phone[data-mode="room"] [data-mode="room"],
+.phone[data-mode="roll"] [data-mode="done"],.phone[data-mode="create"] [data-mode="create"],.phone[data-mode="join"] [data-mode="join"],.phone[data-mode="room"] [data-mode="room"],
 .phone[data-mode="camera"] [data-mode="camera"],.phone[data-mode="done"] [data-mode="done"]{opacity:1}
 .screen .dark{background:#151311}
 .screen small{font:500 11px var(--f-body);color:var(--ink-2)}
@@ -314,8 +314,6 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 /* 1 · the whole desk: the scrapbook lifts off the mat, inviting a look */
 .board[data-shot="0"] .book .is-cover .cover{animation:lift 2.6s var(--ease) .4s infinite alternate}
 @keyframes lift{to{transform:translate(-6px,-12px) rotate(-1.2deg);filter:drop-shadow(0 30px 26px rgba(42,35,30,.36))}}
-/* 2 · the problem: the Photos library gets flicked through, endlessly */
-.board[data-shot="1"] .pl-grid{animation:flick 11s .4s infinite}
 /* 3 · start a roll: the name types itself, Next gets tapped; a friend's phone types the code and joins; the lobby fills up */
 .typed{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;border-right:calc(1.5*var(--fp)) solid transparent;width:max-content;max-width:0}
 .phone[data-mode="create"] .typed{animation:type 1s steps(8,end) .4s forwards,caret .5s step-end .4s 3}
@@ -513,51 +511,6 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 .shot-print.saved::after{animation:savedTag 1.6s var(--ease)}
 @keyframes savedTag{12%,75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,0)}}
 
-/* the phone's camera roll: iPhone Photos, Library tab. Sizes are iPhone points (402 wide) times --fp */
-.screen .ph-lib{padding:0;display:block;background:#fff;--f-ios:-apple-system,"SF Pro Text",system-ui,"Schibsted Grotesk",sans-serif}
-.phone[data-mode="roll"] .ph-status{color:#fff;text-shadow:0 0 calc(6*var(--fp)) rgba(0,0,0,.35)}
-.phone[data-mode="roll"] .ph-sig,.phone[data-mode="roll"] .ph-wifi,.phone[data-mode="roll"] .ph-bat{filter:drop-shadow(0 0 calc(3*var(--fp)) rgba(0,0,0,.3))}
-/* the grid starts at the newest photos (bottom); flicking moves it down through older ones */
-.pl-grid{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);gap:calc(5.7*var(--fp));
-  padding:0 calc(5.5*var(--fp)) calc(112*var(--fp));will-change:transform}
-.pl-grid > i{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
-.pl-grid span{position:relative;display:block;border-radius:calc(5*var(--fp));overflow:hidden;background:#e9e6e1}
-.pl-grid img{display:block;width:100%;height:100%;object-fit:cover}
-.pl-grid em{position:absolute;right:calc(7*var(--fp));bottom:calc(5*var(--fp));font:600 calc(13*var(--fp))/1 var(--f-ios);font-style:normal;color:#fff;text-shadow:0 0 calc(4*var(--fp)) rgba(0,0,0,.5)}
-@keyframes flick{
-  0%,6%{transform:none;animation-timing-function:cubic-bezier(.05,.7,.15,1)}
-  18%,30%{transform:translateY(calc(300*var(--fp)));animation-timing-function:cubic-bezier(.05,.7,.15,1)}
-  42%,54%{transform:translateY(calc(590*var(--fp)));animation-timing-function:cubic-bezier(.05,.7,.15,1)}
-  63%{transform:translateY(calc(838*var(--fp)));animation-timing-function:cubic-bezier(.3,0,.2,1)}
-  67%,80%{transform:translateY(calc(817*var(--fp)));animation-timing-function:cubic-bezier(.45,0,.2,1)}
-  92%,100%{transform:none}}
-/* the scroll edge: content under the title blurs and dims, like iOS 26 */
-.pl-edge{position:absolute;left:0;right:0;top:0;height:calc(150*var(--fp));background:linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.08) 60%,rgba(0,0,0,0))}
-.pl-edge::before,.pl-edge::after{content:"";position:absolute;left:0;right:0;top:0}
-.pl-edge::before{height:calc(138*var(--fp));-webkit-backdrop-filter:blur(calc(3*var(--fp)));backdrop-filter:blur(calc(3*var(--fp)))}
-.pl-edge::after{height:calc(112*var(--fp));-webkit-backdrop-filter:blur(calc(9*var(--fp)));backdrop-filter:blur(calc(9*var(--fp)))}
-.pl-title{position:absolute;left:calc(20*var(--fp));top:calc(54*var(--fp));font:700 calc(34*var(--fp))/1.2 var(--f-ios);letter-spacing:-.01em;color:#fff;text-shadow:0 0 calc(10*var(--fp)) rgba(0,0,0,.35)}
-.pl-sync{position:absolute;left:calc(20*var(--fp));top:calc(97*var(--fp));display:flex;align-items:center;gap:calc(6*var(--fp));
-  font:600 calc(17*var(--fp))/1 var(--f-ios);color:#fff;text-shadow:0 0 calc(8*var(--fp)) rgba(0,0,0,.35)}
-.pl-sync svg{width:calc(22*var(--fp));height:calc(17*var(--fp));filter:drop-shadow(0 0 calc(4*var(--fp)) rgba(0,0,0,.3))}
-/* Liquid Glass controls */
-.pl-glass{position:absolute;display:flex;align-items:center;justify-content:center;font-style:normal;color:#fff;
-  background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(calc(8*var(--fp))) saturate(1.6);backdrop-filter:blur(calc(8*var(--fp))) saturate(1.6);
-  box-shadow:inset 0 0 0 calc(1*var(--fp)) rgba(255,255,255,.45),0 calc(4*var(--fp)) calc(14*var(--fp)) rgba(0,0,0,.12)}
-.pl-filter{left:calc(243*var(--fp));top:calc(56*var(--fp));width:calc(44*var(--fp));height:calc(44*var(--fp));border-radius:50%}
-.pl-filter svg{width:calc(24*var(--fp));height:calc(24*var(--fp))}
-.pl-select{left:calc(297*var(--fp));top:calc(56*var(--fp));width:calc(86*var(--fp));height:calc(44*var(--fp));border-radius:99px;font:500 calc(17*var(--fp))/1 var(--f-ios)}
-.pl-tabs{left:calc(20*var(--fp));bottom:calc(20*var(--fp));width:calc(179*var(--fp));height:calc(58*var(--fp));border-radius:99px;padding:calc(4*var(--fp));gap:0;
-  background:rgba(255,255,255,.72);color:#111}
-.pl-tabs span{position:relative;flex:1;height:100%;border-radius:99px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(2*var(--fp))}
-.pl-tabs span.on{background:rgba(0,0,0,.07);color:#0A7AFF}
-.pl-tabs svg{width:calc(26*var(--fp));height:calc(22*var(--fp))}
-.pl-tabs b{font:600 calc(10.5*var(--fp))/1 var(--f-ios)}
-.pl-tabs em{position:absolute;left:58%;top:calc(2*var(--fp));min-width:calc(17*var(--fp));height:calc(17*var(--fp));border-radius:99px;background:#FF3B30;color:#fff;
-  font:600 calc(11*var(--fp))/calc(17*var(--fp)) var(--f-ios);font-style:normal;text-align:center}
-.pl-search{right:calc(20*var(--fp));bottom:calc(20*var(--fp));width:calc(58*var(--fp));height:calc(58*var(--fp));border-radius:50%;background:rgba(255,255,255,.72);color:#111}
-.pl-search svg{width:calc(24*var(--fp));height:calc(24*var(--fp))}
-
 /* the roll, developed: the app's Reveal screen. Photos fly out of the middle onto the mat, then Start Scrapbook */
 .screen .ph-reveal{padding:0;display:block;background:#C9A57C url(assets/img/reveal-wood.webp) center/cover;--f-ios:-apple-system,"SF Pro Text",system-ui,"Schibsted Grotesk",sans-serif}
 .rv-mat{position:absolute;left:calc(-12*var(--fp));right:calc(-12*var(--fp));top:calc(218*var(--fp));height:calc(428*var(--fp));background-color:var(--mat);
@@ -574,3 +527,5 @@ img.it{height:auto;filter:drop-shadow(0 6px 8px rgba(42,35,30,.28))}
 .phone[data-mode="done"] .rv-photo{animation:rvFly .6s cubic-bezier(.3,1.25,.5,1) calc(.25s + var(--i) * .07s) both}
 @keyframes rvFly{from{transform:translate(-50%,-50%) translate(calc((201 - var(--x)) * var(--fp)),calc((450 - var(--y)) * var(--fp))) scale(.4);opacity:0}20%{opacity:1}}
 .phone[data-mode="done"] .rv-btn{animation:fadeUp .45s var(--ease) 1.3s both}
+/* in The problem the same scatter sits still, with no button yet */
+.phone[data-mode="roll"] .rv-btn{opacity:0}

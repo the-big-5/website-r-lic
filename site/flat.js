@@ -98,7 +98,6 @@ export function buildFlat(board, { go = () => {} } = {}) {
   const phone = goTo(add(place(el('div', 'it phone'), L.phone)), 2);
   phone.innerHTML = `
     <div class="screen"><div class="ph-status"><b>9:41</b><i class="ph-sig"></i><i class="ph-wifi"></i><i class="ph-bat"></i></div>
-      <section data-mode="roll" class="ph-lib">${photosLibrary()}</section>
       <section data-mode="create" class="ph-fig"><img class="ph-figimg" src="${IMG}roll-screen.webp" alt="" draggable="false">
         <span class="cr-name"><span class="typed">Bali '27</span></span>
         <img class="cr-chip c24" src="${IMG}roll-chip24.webp" alt="" draggable="false"><img class="cr-chip c36" src="${IMG}roll-chip36.webp" alt="" draggable="false">
@@ -203,7 +202,9 @@ export function buildFlat(board, { go = () => {} } = {}) {
   };
 }
 
-/* ---------- the roll, developed: the app's Reveal screen (RollRevealView), photos scattered over the mat ---------- */
+/* ---------- the app's Reveal screen (RollRevealView), photos scattered over the mat ----------
+   Shown still in 'The problem' (all those photos, never looked at together), and again when the roll develops,
+   where the photos fly out one by one and Start Scrapbook appears. */
 // Same layout rule as RollRevealViewModel.scatterLayout: 3 columns, one jittered cell per photo in shuffled order,
 // up to 14° of tilt (photos 182 pt on the long side here, a bit bigger than the app’s 150 so 10 photos fill the mat), inside 30 pt sides / 110 pt top / 120 pt bottom of a 402 × 874 screen.
 const REVEAL = [['photo-01', 1050, 1400], ['photo-02', 1400, 933], ['photo-03', 1400, 1050], ['photo-04', 933, 1400], ['photo-05', 1400, 1051],
@@ -222,32 +223,6 @@ function revealPhotos() {
     const r = (rnd() * 2 - 1) * 14, a = w / h, L = 182, pw = a >= 1 ? L : L * a, ph = a >= 1 ? L / a : L;
     return `<img class="rv-photo" src="${IMG}${p}.webp" alt="" draggable="false" style="--x:${x.toFixed(1)};--y:${y.toFixed(1)};--pw:${pw.toFixed(1)};--ph:${ph.toFixed(1)};--r:${r.toFixed(1)}deg;--i:${i}">`;
   }).join('');
-}
-
-/* ---------- the phone's camera roll: the iPhone Photos app, Library tab (iOS 26), on the team's photos ---------- */
-// photo: [file number, width / height]
-const LIB_PHOTOS = { 1: 0.75, 2: 1.5, 3: 1.333, 4: 0.667, 5: 1.333, 6: 1.778, 7: 1.778, 8: 1.778, 9: 0.75, 10: 0.5625 };
-const LIB_ORDER = [3, 7, 1, 10, 5, 2, 8, 4, 6, 9, 3, 5, 1, 7, 2, 10, 4, 8, 6, 3, 9, 5, 2, 7, 1, 10, 8, 4, 6, 2, 5, 9, 3];
-const LIB_VIDEO = { 5: '0:08', 14: '0:15', 27: '0:03' };
-const LIB_ICON = {
-  cloud: '<svg viewBox="0 0 24 18"><path d="M6.5 16.5h11a5 5 0 0 0 .6-10A6.5 6.5 0 0 0 5.6 7.6 4.5 4.5 0 0 0 6.5 16.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5v6m-2.6-2.6L12 13.5l2.6-2.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  filter: '<svg viewBox="0 0 24 24"><path d="M4 7h16M7 12h10M10 17h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-  library: '<svg viewBox="0 0 28 24"><rect x="5" y="1.5" width="21" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 6.5v11A4.5 4.5 0 0 0 6.5 22H21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 15l4.5-5 3.5 3.5 2.5-2.5 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="20" cy="6" r="1.8" fill="currentColor"/></svg>',
-  collections: '<svg viewBox="0 0 24 24"><rect x="2" y="9" width="20" height="13" rx="3" fill="currentColor"/><path d="M4.5 6.5h15M7 3.5h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-  search: '<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5l5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
-};
-function photosLibrary() {
-  // each photo fits its square cell, like the Photos grid in "aspect ratio" mode
-  const tiles = LIB_ORDER.map((n, i) => {
-    const a = LIB_PHOTOS[n], w = a >= 1 ? 100 : a * 100, h = a >= 1 ? 100 / a : 100;
-    const v = LIB_VIDEO[i] ? `<em>${LIB_VIDEO[i]}</em>` : '';
-    return `<i><span style="width:${w.toFixed(1)}%;height:${h.toFixed(1)}%"><img src="${IMG}photo-${String(n).padStart(2, '0')}.webp" alt="" decoding="async" draggable="false">${v}</span></i>`;
-  }).join('');
-  return `<div class="pl-grid">${tiles}</div><i class="pl-edge"></i>
-    <b class="pl-title">Library</b><span class="pl-sync">${LIB_ICON.cloud}Syncing 1 Item…</span>
-    <i class="pl-glass pl-filter">${LIB_ICON.filter}</i><i class="pl-glass pl-select">Select</i>
-    <div class="pl-glass pl-tabs"><span class="on">${LIB_ICON.library}<b>Library</b></span><span>${LIB_ICON.collections}<b>Collections</b><em>1</em></span></div>
-    <i class="pl-glass pl-search">${LIB_ICON.search}</i>`;
 }
 
 /* ---------- doodles drawn on the first spread (page px, 500 × 740) ---------- */
