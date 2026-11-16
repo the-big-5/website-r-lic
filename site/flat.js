@@ -380,9 +380,10 @@ function buildTogether(add, pages) {
 // The back is the app's camera screen (CaptureSessionView): an 874 × 402 canvas, viewfinder 424 × 318 in a 444 × 337 bezel.
 // Both films are the app's own looks (FilmFilterPipeline), drawn by film.js: B&W 400 = photo-effect noir, Color Print 200 = the Digicam look.
 const FILMS = {
-  bw: { name: 'PRO 35 B&W 400', cap: 'pro 35 b&w 400', can: 'can-bw.png' },
-  color: { name: 'COLOR PRINT 200', cap: 'color print 200', can: 'can-color.png' },
+  bw: { name: 'PRO 35 B&W 400', can: 'can-bw.png' },
+  color: { name: 'COLOR PRINT 200', can: 'can-color.png' },
 };
+const PRINT_CAP = '@craftwithrelic';                 // written under every print, on the desk and in the saved JPG
 const SCENES = ['photo-03', 'photo-05', 'photo-07'];
 const SRC_W = 800, SRC_H = 600;                       // a print made from a sample photo
 const PRINT_SPOTS = [[-30, 300, -6], [150, 330, 4], [300, 280, -3]];   // where prints land, from the camera's centre
@@ -487,7 +488,7 @@ function buildCamera(add, board, go) {
   // the shot slides out from under the camera and develops on the desk; hold it to save it
   function printOut(canvas, f) {
     const [dx, dy, r] = PRINT_SPOTS[shots++ % PRINT_SPOTS.length];
-    const p = place(el('figure', 'it pol shot-print', `<figcaption>${FILMS[f].cap}</figcaption>`), { x: D.x + dx, y: D.y + dy, w: 210, r });
+    const p = place(el('figure', 'it pol shot-print', `<figcaption>${PRINT_CAP}</figcaption>`), { x: D.x + dx, y: D.y + dy, w: 210, r });
     p.prepend(canvas);
     p.style.setProperty('--fx', -dx + 'px'); p.style.setProperty('--fy', -dy * 0.7 + 'px');
     board.insertBefore(p, cam);
@@ -503,9 +504,23 @@ function buildCamera(add, board, go) {
     if (prints.length > PRINT_SPOTS.length) { const old = prints.shift(); old.classList.add('gone'); setTimeout(() => old.remove(), 400); }
     requestAnimationFrame(() => p.classList.add('on'));
   }
-  function save(p, canvas, f) {
+  // the saved JPG is the whole print: the photo in its white frame, with the handle written underneath
+  async function polaroid(photo) {
+    const pw = photo.width, w = Math.round(pw / 0.88), pad = Math.round(w * 0.06), foot = Math.round(w * 0.2);
+    const out = document.createElement('canvas'); out.width = w; out.height = pad + photo.height + foot;
+    const x = out.getContext('2d');
+    x.fillStyle = '#FFFDF8'; x.fillRect(0, 0, out.width, out.height);
+    x.drawImage(photo, pad, pad);
+    const size = Math.round(w * 0.124), font = `700 ${size}px Caveat, "Comic Sans MS", cursive`;
+    try { await document.fonts.load(font, PRINT_CAP); } catch {}
+    x.font = font; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--maroon').trim() || '#6B2230';
+    x.fillText(PRINT_CAP, w / 2, pad + photo.height + foot * 0.5);
+    return out;
+  }
+  async function save(p, canvas, f) {
     p.classList.remove('saved'); void p.offsetWidth; p.classList.add('saved');
-    canvas.toBlob(b => {
+    (await polaroid(canvas)).toBlob(b => {
       if (!b) return;
       const a = document.createElement('a');
       a.href = URL.createObjectURL(b); a.download = `relic-${f === 'bw' ? 'bw-400' : 'color-200'}-${++saved}.jpg`;

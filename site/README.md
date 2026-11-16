@@ -63,7 +63,7 @@ Upload this folder as is to Vercel, Netlify or any static host. No build step.
 
 The camera in the "Shoot" shot can use the visitor's front camera ("Use my camera"). Browsers only allow
 that on `https://` (or `localhost`), so serve the site over https. Photos stay in the visitor's browser;
-holding a print saves it as a JPG.
+holding a print saves it as a JPG: the photo in its white polaroid frame with "@craftwithrelic" written underneath.
 
 ## Still to come
 
