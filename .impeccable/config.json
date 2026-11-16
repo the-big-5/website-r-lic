@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "plan.html"
+        ],
+        "createdAt": "2026-11-15T14:36:14.662Z",
+        "reason": "Claude: tiny labels are inside scaled-down wireframe thumbnails, not body copy"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          "plan.html"
+        ],
+        "createdAt": "2026-11-15T14:36:38.683Z",
+        "reason": "Claude: labels and boxes inside scaled-down wireframe thumbnails of the planning page, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "plan.html"
+        ],
+        "createdAt": "2026-11-15T14:36:38.700Z",
+        "reason": "Claude: labels and boxes inside scaled-down wireframe thumbnails of the planning page, not shipped UI"
+      }
+    ]
+  }
+}

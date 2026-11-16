@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "style.css"
+        ],
+        "createdAt": "2026-11-15T16:00:15.937Z",
+        "reason": "Claude: the grid draws a cutting mat, a real measurement surface from the Figma desk"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-15T16:00:15.951Z",
+        "reason": "Claude: same cutting-mat grid as style.css"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-15T16:00:15.963Z",
+        "reason": "Claude: flagged element is the full-screen .stage holding the canvas and desk, which are meant to run edge to edge"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Local tool settings and caches
+.claude/
+.impeccable/hook.cache.json
+
+# Full-size Figma exports (about 92 MB): kept locally, not needed by the site
+figma-sources/

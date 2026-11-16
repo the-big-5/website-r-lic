@@ -1,0 +1,391 @@
+<title>rèlic Website Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Caveat:wght@500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a plan read like a director's shot list — reading column, one live camera-move demo, then the shot table. Single committed paper look. */
+:root{
+  color-scheme: light;
+  --paper:#F4EEE2; --kraft:#E4D6BF; --card:#FBF8F2; --wall:#EADFCB;
+  --ink:#2A231E; --ink-2:#574C43; --line:#CDBFA8;
+  --maroon:#6B2230; --tape:#EBC86A; --mat:#2F6B4F; --wood:#B07A4E; --wood-2:#8C5A35; --red:#B3262B;
+  --f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-hand:"Caveat","Comic Sans MS",cursive;
+  --f-mono:"DM Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.6;margin:0}
+.page{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:48px 96px}
+.read{max-width:68ch}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,3.6vw,2.3rem);font-weight:800;letter-spacing:-.015em}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0}
+.label{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--maroon)}
+.hand{font-family:var(--f-hand);font-weight:700;color:var(--maroon);font-size:1.5rem;line-height:1.1}
+.muted{color:var(--ink-2)}
+a{color:var(--maroon)}
+:focus-visible{outline:2px solid var(--maroon);outline-offset:3px}
+.masthead{display:grid;gap:18px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2)}
+.rev{position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 18px 14px;display:grid;gap:6px;margin-top:8px}
+.rev::before{content:"";position:absolute;top:-9px;left:28px;width:84px;height:18px;background:var(--tape);opacity:.9;transform:rotate(-3deg);border-radius:2px}
+.toc{display:flex;flex-wrap:wrap;gap:8px}
+.toc a{font-family:var(--f-mono);font-size:.8rem;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:6px}
+.toc a:hover{border-color:var(--maroon);color:var(--maroon)}
+section.block{padding-top:72px;display:grid;gap:24px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:8px;align-content:start;min-width:0}
+ul.clean{margin:0;padding-left:1.1em;display:grid;gap:6px}
+ul.clean li::marker{color:var(--maroon)}
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.vs .note.bad{border-style:dashed}
+.vs .note.good{border-color:var(--maroon)}
+
+/* ---------- camera demo ---------- */
+.demo{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid}
+.stage{position:relative;height:clamp(300px,52vw,500px);perspective:1100px;perspective-origin:50% 45%;overflow:hidden;background:linear-gradient(var(--wall),var(--paper))}
+.fit{position:absolute;left:50%;top:52%;width:640px;height:360px;margin:-180px 0 0 -320px;transform:scale(var(--k,1));transform-style:preserve-3d}
+.world{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:320px 180px;will-change:transform}
+.desk{position:absolute;inset:0;border-radius:10px;background:
+  repeating-linear-gradient(90deg,rgba(0,0,0,.035) 0 2px,transparent 2px 38px),
+  linear-gradient(var(--wood),#A46F45);box-shadow:inset 0 0 0 2px rgba(0,0,0,.06)}
+.edge{position:absolute;left:0;top:360px;width:640px;height:18px;background:var(--wood-2);transform-origin:top;transform:rotateX(90deg);border-radius:0 0 6px 6px}
+.leg{position:absolute;top:360px;width:16px;height:150px;background:#E9E3D8;transform-origin:top;transform:rotateX(90deg)}
+.wall{position:absolute;left:-60px;top:-300px;width:760px;height:300px;transform-origin:bottom center;transform:rotateX(-90deg);background:var(--wall);transition:opacity .2s}
+.shelf{position:absolute;left:150px;top:150px;width:330px;height:10px;background:var(--wood-2);border-radius:2px}
+.book{position:absolute;bottom:150px;width:26px;border-radius:3px 3px 0 0;font-family:var(--f-mono);font-size:9px;color:#fff;writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center}
+.book.new{opacity:0;transform:translateY(-20px);transition:opacity .3s,transform .4s cubic-bezier(.2,0,0,1)}
+.shelved .book.new{opacity:1;transform:none}
+.wnote{position:absolute;left:530px;top:60px;width:150px;padding:14px 12px;background:#fff;box-shadow:0 2px 6px rgba(42,35,30,.18);transform:rotate(3deg);font-family:var(--f-hand);font-size:28px;font-weight:700;color:var(--maroon);line-height:1;text-align:center}
+.wnote::before{content:"";position:absolute;top:-9px;left:50%;width:60px;height:18px;margin-left:-30px;background:var(--tape);opacity:.9;transform:rotate(-4deg)}
+.win{position:absolute;left:30px;top:40px;width:96px;height:120px;border:6px solid #fff;background:linear-gradient(#CFE0E6,#E9EFEA);transition:background .4s}
+.on .win{background:linear-gradient(#2E3550,#5A5068)}
+.obj{position:absolute;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:10px;text-align:center;line-height:1.2}
+.mat{left:250px;top:150px;width:240px;height:170px;background:var(--mat);background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:20px 20px;border-radius:8px}
+.phone{left:96px;top:176px;width:70px;height:130px;background:#1E1A17;border-radius:12px;padding:6px}
+.phone .scr{width:100%;height:100%;border-radius:8px;background:#F7F1E6;color:var(--ink);font-size:8px;display:grid;place-items:center;text-align:center;padding:4px}
+.cam{left:470px;top:56px;width:120px;height:66px;background:#2B5A43;border-radius:10px;color:#fff}
+.cam b{position:absolute;right:10px;top:8px;background:#111;color:var(--tape);font-size:11px;padding:1px 4px;border-radius:3px;font-weight:500}
+.cam i{position:absolute;left:14px;top:16px;width:34px;height:34px;border-radius:50%;background:#111;box-shadow:inset 0 0 0 6px #555}
+.tool{left:36px;top:30px;width:150px;height:92px;background:var(--red);color:#fff}
+.code{left:214px;top:44px;width:74px;height:66px;background:var(--tape);transform:rotate(-4deg);font-size:10px;color:var(--ink)}
+.av{width:30px;height:34px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);padding:3px 3px 8px}
+.av span{display:block;width:100%;height:100%}
+.book-open{left:282px;top:176px;width:176px;height:118px;background:#fff;border-radius:4px;box-shadow:0 3px 8px rgba(0,0,0,.25);display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px;transition:opacity .3s}
+.book-open div{background:#EDE4D3;border-radius:2px;position:relative}
+.book-open div::after{content:"";position:absolute;inset:8px 10px 18px;background:var(--pc,#C99);}
+.shelved .book-open{opacity:0}
+.pile{left:150px;top:250px;width:60px;height:70px}
+.pile span{position:absolute;width:44px;height:50px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);padding:4px 4px 10px}
+.pile span::after{content:"";display:block;width:100%;height:100%;background:var(--pc)}
+.film{left:440px;top:118px;width:24px;height:60px;background:repeating-linear-gradient(#1b1b1b 0 10px,#2d2d2d 10px 12px);border-left:3px dotted #777;border-right:3px dotted #777}
+.lamp{position:absolute;left:560px;top:250px;width:60px;height:110px;transform-origin:bottom;transform:rotateX(-90deg);transform-style:preserve-3d}
+.lamp .shade{position:absolute;left:0;top:0;width:60px;height:34px;background:#D9783D;border-radius:30px 30px 4px 4px}
+.lamp .pole{position:absolute;left:28px;top:30px;width:4px;height:80px;background:#C7652D}
+.lamp .glow{position:absolute;left:-40px;top:20px;width:140px;height:120px;border-radius:50%;background:radial-gradient(rgba(255,214,140,.7),transparent 70%);opacity:0;transition:opacity .4s}
+.on .lamp .glow{opacity:1}
+.hud{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--line)}
+.counter{font-family:var(--f-mono);font-size:.85rem}
+.pad{position:absolute;left:16px;bottom:16px;width:min(320px,calc(100% - 32px));background:#FFFDF8;border-radius:4px;box-shadow:0 4px 14px rgba(42,35,30,.18);padding:16px 18px 18px;display:grid;gap:6px;border-top:10px solid var(--maroon)}
+.pad .k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--maroon)}
+.pad .t{font-family:var(--f-display);font-weight:800;font-size:1.15rem;line-height:1.15}
+.pad .s{font-size:.85rem;color:var(--ink-2);line-height:1.45}
+.ctrl{display:flex;gap:12px;align-items:center;flex:1 1 320px}
+.ctrl input{flex:1;accent-color:var(--maroon);min-width:0}
+.btn{font:500 .8rem var(--f-mono);border:1px solid var(--ink);background:var(--card);color:var(--ink);border-radius:6px;padding:8px 12px;cursor:pointer}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn:active{transform:translateY(1px)}
+.shots{display:flex;flex-wrap:wrap;gap:6px}
+.shots button{font:500 .78rem var(--f-mono);border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 10px;cursor:pointer;min-height:32px}
+.shots button[aria-pressed="true"]{background:var(--maroon);border-color:var(--maroon);color:#fff}
+
+/* timeline */
+.timeline{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.timeline div{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 8px 10px;font-family:var(--f-mono);font-size:.72rem;line-height:1.3;min-width:0}
+.timeline div b{display:block;color:var(--maroon);font-weight:500}
+.timeline .mv{height:6px;border-radius:3px;margin-top:8px;background:linear-gradient(90deg,var(--line) 0 40%,var(--maroon) 40%)}
+/* shot table */
+.table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:820px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.75rem;font-weight:500;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+td.en{font-family:var(--f-display);font-weight:700;line-height:1.3}
+td.en small{display:block;font-family:var(--f-body);font-weight:400;font-size:.85rem;color:var(--ink-2);margin-top:4px}
+td .hand{font-size:1.2rem}
+.opt{display:grid;gap:12px}
+.opt .note h3 .tag{font-family:var(--f-mono);font-size:.72rem;font-weight:500;color:#fff;background:var(--maroon);padding:2px 7px;border-radius:999px;vertical-align:middle;margin-left:6px}
+.steps{counter-reset:s;display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);color:var(--maroon)}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.sw b{display:block;height:56px}
+.sw span{display:block;padding:8px 10px;font-family:var(--f-mono);font-size:.75rem;line-height:1.4}
+@media (max-width:760px){
+  .timeline{grid-template-columns:repeat(4,1fr)}
+  .pad{left:12px;bottom:12px;padding:12px 14px 14px}
+  .pad .t{font-size:1rem}
+  .pad .s{display:none}
+}
+</style>
+
+<div class="page">
+
+<header class="masthead">
+  <div class="label">Rencana website · draf 4 (2D saja)</div>
+  <div class="rev"><span class="label">Yang berubah di draf 4</span>
+    <ul class="clean">
+      <li><strong>3D dihapus seluruhnya.</strong> Tidak ada lagi adegan meja dari jauh; halaman langsung dibuka di meja 2D.</li>
+      <li><strong>Halaman = meja penuh.</strong> Di semua ukuran layar dan di setiap shot, meja selalu memenuhi layar dari tepi ke tepi. Kamera hanya bergeser dan zoom ke bagian-bagian meja.</li>
+      <li><strong>Tidak ada area kosong.</strong> Meja diperbesar dan diisi barang tambahan: gulungan washi, photo strip, sticky note tulisan tangan, huruf potongan "WKWK", penghapus, polaroid, tiket, roll film, gunting dan foto lepas di cutting mat.</li>
+      <li>Shot 1 sekarang tampak atas seluruh meja dengan judul. Shot 2–9 sama seperti draf 3.</li>
+    </ul>
+  </div>
+  <h1>rèlic: satu meja, satu tarikan kamera, dari atas sampai bawah.</h1>
+  <p class="read muted">Rencana landing page rèlic. Penjelasan dalam Bahasa Indonesia; teks website full English. Logo masih placeholder. Prototipe yang bisa dicoba ada di folder <code>relic-website</code>.</p>
+  <div class="rev"><span class="label">Yang berubah di draf 3</span>
+    <ul class="clean">
+      <li><strong>3D hanya di pembuka.</strong> Meja terlihat dari depan dalam 3D, lalu kamera menunduk. Begitu tepat dari atas, adegan berganti mulus (match-cut) ke <strong>meja 2D</strong> dengan tata letak yang sama. Dari situ sampai akhir semuanya 2D dan tidak kembali ke 3D.</li>
+      <li>Meja 2D memakai <strong>aset asli dari Figma</strong>: toolbox terbuka, kamera dispo, roll film, buku "memories", notebook kuning, krayon, cutter, pensil, penggaris, struk, tiket, stiker, foto tim. Pinggiran meja ramai, tengah tetap lega.</li>
+      <li><strong>Toolbox dipakai untuk proses edit:</strong> foto, washi tape, dan stiker terbang dari toolbox ke halaman, lalu muncul tulisan tangan dan "page by: chang".</li>
+      <li><strong>Shot scrapbook fokus ke contoh hasil</strong> yang bisa dibalik: scroll membalik halaman, dan ada tombol Previous/Next page serta swipe.</li>
+      <li><strong>Rak diganti tumpukan buku di meja.</strong> Scrapbook ditutup dan ditumpuk di atas buku lain, lalu kamera mundur dan kertas "coming soon" diselotip di cutting mat.</li>
+    </ul>
+  </div>
+  <div class="meta"><span>Mode: Persuade</span><span>Jenis: iOS app (software)</span><span>Fungsi: coming soon</span><span>15 Nov 2026</span></div>
+  <nav class="toc" aria-label="Isi">
+    <a href="#ide">Ide</a><a href="#demo">Coba gerak kameranya</a><a href="#shot">Shot list</a><a href="#gerak">Aturan gerak</a><a href="#hp">HP & aksesibilitas</a><a href="#visual">Visual</a><a href="#teknis">Teknis 3D</a><a href="#lanjut">Langkah berikutnya</a>
+  </nav>
+</header>
+
+<section class="block" id="ide">
+  <div class="label">01 · Ide</div>
+  <h2>Satu roll, dari meja kosong sampai buku di rak.</h2>
+  <p class="read">Halamannya adalah satu "one-shot" (satu take panjang tanpa potongan). Pengunjung melihat satu meja kerja rèlic dari depan. Saat scroll, kamera maju, menunduk, lalu menyusuri meja mengikuti perjalanan satu roll: foto yang berserakan, roll dibuat, teman diajak, jepretan dihitung mundur, film dicuci, scrapbook diisi bareng. Setelah itu kamera naik ke rak di dinding tempat bukunya disimpan, lalu mundur lagi ke sudut awal. Cerita aplikasi = perjalanan kamera, jadi tidak perlu dipotong jadi section.</p>
+  <div class="vs">
+    <div class="note bad"><span class="label">Yang dihindari</span><p>Hero → section → section, masing-masing "teks kiri, gambar kanan" atau "gambar atas, teks bawah". Tiap section berdiri sendiri, ritmenya patah, dan rasanya seperti template.</p></div>
+    <div class="note good"><span class="label">Yang dibuat</span><p>Satu ruang yang sama dari awal sampai akhir. Yang berubah cuma posisi kamera, benda yang sedang "beraksi", dan lembar catatan. Pengunjung merasa sedang dibawa keliling meja, bukan membaca brosur.</p></div>
+  </div>
+</section>
+
+<section class="block" id="demo">
+  <div class="label">02 · Coba gerak kameranya</div>
+  <h2>Sketsa gerak kamera dari draf 2 (geser slider).</h2>
+  <p class="read muted">Sketsa lama dari draf 2, disimpan sebagai arsip. Bagian menunduk dari depan ke atas masih sama, tapi akhirnya sekarang tetap di meja 2D, bukan naik ke rak. Alur terbaru ada di Shot list di bawah dan di prototipe.</p>
+  <div class="demo">
+    <div class="stage" id="stage">
+      <div class="fit" id="fit">
+        <div class="world" id="world">
+          <div class="leg" style="left:20px"></div><div class="leg" style="left:604px"></div>
+          <div class="edge"></div>
+          <div class="wall" id="wall">
+            <div class="win"></div>
+            <div class="shelf"></div>
+            <div class="book" style="left:166px;height:86px;background:#6B2230">Bandung</div>
+            <div class="book" style="left:196px;height:74px;background:#2F6B4F">Kos 4B</div>
+            <div class="book" style="left:226px;height:92px;background:#C79A2E;color:#2A231E">Grad night</div>
+            <div class="book" style="left:256px;height:80px;background:#2A231E">Kepedesan</div>
+            <div class="book new" style="left:288px;height:96px;background:#B3262B">Bali '27</div>
+            <div class="wnote">coming<br>soon</div>
+          </div>
+          <div class="desk"></div>
+          <div class="obj tool">toolbox</div>
+          <div class="obj code">ROLL<br>N4B13L</div>
+          <div class="obj" style="left:206px;top:116px;gap:4px;display:flex">
+            <div class="av"><span style="background:#C98B6B"></span></div>
+            <div class="av"><span style="background:#7FA38A"></span></div>
+            <div class="av"><span style="background:#D8B25A"></span></div>
+          </div>
+          <div class="obj cam"><i></i><b id="cnt">09</b></div>
+          <div class="obj film"></div>
+          <div class="obj mat"></div>
+          <div class="obj book-open">
+            <div style="--pc:#C98B6B"></div><div style="--pc:#7FA38A"></div>
+          </div>
+          <div class="obj phone"><div class="scr" id="scr">camera roll</div></div>
+          <div class="obj pile">
+            <span style="left:0;top:6px;transform:rotate(-12deg);--pc:#9DB4C0"></span>
+            <span style="left:14px;top:0;transform:rotate(8deg);--pc:#C9A27E"></span>
+            <span style="left:6px;top:16px;transform:rotate(-2deg);--pc:#A6B58C"></span>
+          </div>
+          <div class="lamp"><div class="glow"></div><div class="shade"></div><div class="pole"></div></div>
+        </div>
+      </div>
+      <div class="pad" aria-live="polite"><span class="k" id="pk"></span><span class="t" id="pt"></span><span class="s" id="ps"></span></div>
+    </div>
+    <div class="hud">
+      <div class="ctrl"><label class="counter" for="scrub">scroll</label><input id="scrub" type="range" min="0" max="700" value="0" step="1"><span class="counter" id="pct">0%</span></div>
+      <div class="shots" id="shots" role="group" aria-label="Lompat ke shot"></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="shot">
+  <div class="label">03 · Shot list</div>
+  <h2>Sembilan shot, satu tarikan.</h2>
+  <p class="read muted">Di dalam tiap porsi scroll, kamera <strong>diam dulu</strong> (catatan bisa dibaca dengan tenang) lalu <strong>bergerak</strong> ke shot berikutnya. Shot scrapbook mendapat porsi paling panjang supaya ada waktu membalik halaman. Tidak ada snapping dan tidak ada scroll-jacking.</p>
+  <div class="timeline" aria-hidden="true" style="grid-template-columns:repeat(9,1fr)">
+    <div><b>1 · 3D</b>Depan<div class="mv"></div></div><div><b>2 · 2D</b>Masalah<div class="mv"></div></div><div><b>3</b>Create<div class="mv"></div></div><div><b>4</b>Invite<div class="mv"></div></div>
+    <div><b>5</b>Shoot<div class="mv"></div></div><div><b>6</b>Edit<div class="mv"></div></div><div><b>7</b>Buku<div class="mv"></div></div><div><b>8</b>Tumpukan<div class="mv"></div></div><div><b>9</b>Soon<div class="mv" style="background:var(--line)"></div></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Shot</th><th>Kamera</th><th>Yang terjadi di meja</th><th>Lembar catatan (English)</th></tr></thead>
+      <tbody>
+        <tr><td><b>1 · Depan (3D)</b></td><td>Tampak depan agak atas: meja, dinding, rak, jendela.</td><td>Meja dengan benda-benda rèlic (tekstur & gambar dari Figma). Lalu kamera menunduk ke posisi tepat dari atas dan berganti ke 2D.</td><td class="en">Shoot together. Scrapbook together.<small>rèlic is a camera roll your whole friend group shares. Limited shots, revealed when the roll is done, made into one scrapbook by everyone.</small><small>[Coming soon to the App Store]</small></td></tr>
+        <tr><td><b>2 · Masalah (2D)</b></td><td>Mendekat ke HP.</td><td>Layar HP: grid camera roll. Tiga foto tim meluncur keluar dari HP dan berserakan.</td><td class="en">Hundreds of photos. Never looked at together.<small>They're split across camera rolls and group chats, shot by the one friend who always holds the phone, and buried a week later.</small></td></tr>
+        <tr><td><b>3 · Create a roll</b></td><td>Dekat sekali ke HP.</td><td>Layar HP berganti ke Create Roll: "Bali '27", pilihan 24 · 36 · 48 · 72.</td><td class="en">01 · Start a roll for the hangout.<small>Name it and pick 24, 36, 48 or 72 shots. That's the whole group's film, so every frame counts.</small></td></tr>
+        <tr><td><b>4 · Invite</b></td><td>Geser ke sticky note.</td><td>Sticky note kode roll N4B13L. Tiga polaroid teman (leps, chang, biel) masuk satu per satu. Layar HP berganti ke Room.</td><td class="en">02 · One code, everyone's in.<small>Share the roll code and friends join in a tap. Everyone shoots on the same roll.</small></td></tr>
+        <tr><td><b>5 · Shoot</b></td><td>Geser ke kamera dispo.</td><td>Penghitung 09 → 08. Strip film keluar dari kamera. Di sekitarnya ada roll film dan krayon.</td><td class="en">03 · Shoot. No peeking.<small>Every shot counts down the roll. Nothing shows until the last frame, so you stay in the moment.</small><span class="hand">fewer shots, more moment</span></td></tr>
+        <tr><td><b>6 · Edit bareng</b></td><td>Mundur sedikit: toolbox + buku di cutting mat.</td><td>Sampul buku "memories" terbuka. Dari toolbox terbang foto, dua washi tape, dan stiker bunga ke halaman kanan, lalu muncul tulisan tangan dan "page by: chang".</td><td class="en">04 · The roll develops. Everyone gets a page.<small>Open the toolbox: tape, stickers, the receipt from dinner. Each friend makes their own page in the same book.</small><span class="hand">their page, their rules</span></td></tr>
+        <tr><td><b>7 · Contoh scrapbook</b></td><td>Fokus ke buku terbuka.</td><td>4 spread dari bahan asli tim (foto, tiket AQUARIUM / ROW F·12, struk, wifi TheBigFive, catatan WWDC, "page by: …"). Scroll membalik halaman; ada tombol Previous/Next page dan swipe.</td><td class="en">One night, five points of view.<small>This one's ours. Flip through it.</small><small>[Previous page] [Next page]</small></td></tr>
+        <tr><td><b>8 · Tumpukan buku</b></td><td>Geser ke pojok kanan bawah.</td><td>Buku ditutup dan mendarat di atas tumpukan scrapbook lain (Kos 4B, Grad night, Bandung, Kepedesan). Tumpukan = profile shelf.</td><td class="en">Every hangout gets a spine.<small>Finished scrapbooks stack up on your profile shelf, ready to reopen whenever.</small><span class="hand">ours, not mine</span></td></tr>
+        <tr><td><b>9 · Coming soon</b></td><td>Mundur sampai seluruh meja terlihat (di HP sedikit lebih dekat).</td><td>Kertas "coming soon" diselotip di tengah cutting mat.</td><td class="en"><span class="hand" style="font-size:1.6rem">coming soon</span><small>rèlic lands on the App Store soon. Get your group ready, and follow along while we build it.</small><small>[Coming soon to the App Store] [Follow @craftwithrelic]</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="font-size:.92rem">Setelah shot 8, adegan selesai dan scroll biasa masuk ke footer tipis (logo placeholder, Instagram, © 2026 rèlic). Nav di atas cuma logo + Follow, plus penanda kecil "frame 03/08" di pojok sebagai progress, gayanya mirip penghitung film.</p>
+</section>
+
+<section class="block" id="gerak">
+  <div class="label">04 · Aturan gerak</div>
+  <h2>Kameranya yang bergerak, bukan semuanya.</h2>
+  <div class="grid-3">
+    <div class="note"><h3>Satu aksi per shot</h3><p>Di tiap shot cuma satu benda yang beraksi (HP menyala, kode muncul, penghitung turun, foto jatuh ke buku). Benda lain diam. Ini aturan 1/3 dari skill motion: tidak lebih dari sepertiga elemen bergerak bersamaan.</p></div>
+    <div class="note"><h3>Tiga lapis, semuanya pelan</h3><p><b>Utama:</b> gerak kamera. <b>Pendukung:</b> bayangan benda ikut bergeser. <b>Latar:</b> cahaya berubah pelan dari sore ke malam sepanjang halaman. Tidak ada partikel, glitter, atau benda yang goyang terus.</p></div>
+    <div class="note"><h3>Karakter "kertas"</h3><p>Easing halus (cubic-bezier .4,0,.2,1), mendarat lembut dengan overshoot maksimal 3%, seperti kertas yang ditaruh. Aksi kecil 250–400 ms. Kamera ikut scroll dengan sedikit smoothing, tanpa snap.</p></div>
+    <div class="note"><h3>Catatan tetap di tempat</h3><p>Lembar catatan selalu di posisi yang sama (kiri bawah di laptop, bawah di HP). Saat ganti shot, lembarnya "disobek" ke atas (±300 ms), jadi mata tidak perlu mencari teks.</p></div>
+    <div class="note"><h3>Interaksi atas kemauan user</h3><p>Balik buku contoh dan geser strip film hanya di shot 6, dan hanya kalau diklik. Hover: tombol berubah, polaroid terangkat 2 px. Selain itu tidak ada yang bergerak sendiri.</p></div>
+    <div class="note"><h3>Dilarang</h3><p>Scroll-jacking/snap, parallax pada teks, fade-in tiap blok, autoplay carousel, kamera berputar lebih dari ±40° dalam satu gerakan.</p></div>
+  </div>
+</section>
+
+<section class="block" id="hp">
+  <div class="label">05 · HP, tablet & aksesibilitas</div>
+  <h2>Adegan yang sama, dibingkai untuk layar tegak.</h2>
+  <div class="grid-3">
+    <div class="note"><h3>HP (390)</h3><p>Shot list tetap sama, tapi kamera dibingkai lebih dekat (meja tegak di layar), total scroll lebih pendek (±6 layar, di laptop ±9). Catatan jadi kartu di sepertiga bawah layar. Tombol selebar layar.</p></div>
+    <div class="note"><h3>Tablet & laptop</h3><p>Di 768, 1024, dan 1440 adegan mengisi layar penuh, catatan di kiri bawah. Rasio adegan menyesuaikan ukuran layar, bukan di-zoom paksa.</p></div>
+    <div class="note"><h3>Reduce motion & HP lemah</h3><p>Kalau "Reduce motion" aktif atau perangkat tidak kuat 3D, adegan diganti 8 gambar diam (satu per shot) yang disusun berurutan dengan catatannya. Isinya sama persis, tanpa animasi.</p></div>
+    <div class="note"><h3>Teks tetap teks</h3><p>Semua catatan adalah teks HTML biasa (bisa dibaca screen reader dan Google), bukan bagian dari gambar 3D. Ada link "lewati ke coming soon".</p></div>
+    <div class="note"><h3>Kecepatan</h3><p>Model 3D dikompres (target total &lt; 3 MB). Shot 1 tampil dulu sebagai gambar, lalu model 3D dimuat diam-diam di belakang.</p></div>
+  </div>
+</section>
+
+<section class="block" id="visual">
+  <div class="label">06 · Arah visual</div>
+  <h2>Ruang kerja hangat, benda dari dunia rèlic.</h2>
+  <p class="read">Mengikuti referensi meja 3D yang kamu kirim (bersih, latar terang, benda bergaya "clay"/lembut). Bendanya diganti dengan benda-benda rèlic dari Figma: kamera sekali pakai hijau, kotak perkakas merah, cutting mat hijau, gulungan film, selotip kuning, polaroid, scrapbook, dan rak di dinding. Latar tetap tenang (krem/kraft polos) supaya benda dan catatannya yang menonjol.</p>
+  <div class="swatches">
+    <div class="sw"><b style="background:#F4EEE2"></b><span>Paper #F4EEE2</span></div>
+    <div class="sw"><b style="background:#EADFCB"></b><span>Wall #EADFCB</span></div>
+    <div class="sw"><b style="background:#2A231E"></b><span>Espresso #2A231E</span></div>
+    <div class="sw"><b style="background:#6B2230"></b><span>Maroon #6B2230</span></div>
+    <div class="sw"><b style="background:#EBC86A"></b><span>Tape #EBC86A</span></div>
+    <div class="sw"><b style="background:#2F6B4F"></b><span>Mat #2F6B4F</span></div>
+  </div>
+  <p class="muted" style="font-size:.92rem">Font usulan: Bricolage Grotesque (judul), Inter (teks), Caveat (coretan tangan), DM Mono (kode roll & penghitung). Kode warna dari screenshot Figma, dicocokkan lagi saat build.</p>
+</section>
+
+<section class="block" id="teknis">
+  <div class="label">07 · Teknis: cara membuat adegan 3D</div>
+  <h2>Gerak "dari depan ke atas" butuh adegan 3D sungguhan.</h2>
+  <p class="read">Aset di Figma masih ilustrasi 2D (tampak atas). Supaya kamera bisa mulai dari depan lalu menunduk, benda-bendanya perlu punya bentuk 3D. Ada tiga cara:</p>
+  <div class="opt">
+    <div class="note"><h3>A · Three.js + model 3D ringan <span class="tag">dipilih</span></h3><p>Model low-poly bergaya clay (dibuat di Blender atau Spline, diekspor ke .glb), dirender di browser dengan Three.js. Kamera dikendalikan scroll lewat GSAP ScrollTrigger. Paling fleksibel dan ringan kalau modelnya sederhana, dan bisa berinteraksi (balik buku, geser film). <b>Butuh:</b> ±10 model sederhana.</p></div>
+    <div class="note"><h3>B · Spline embed</h3><p>Seluruh adegan dibuat di Spline, lalu kameranya dihubungkan ke scroll. Paling gampang untuk desainer, tapi file runtime-nya berat di HP dan kontrolnya lebih terbatas.</p></div>
+    <div class="note"><h3>C · Rangkaian gambar hasil render</h3><p>Adegan dirender di Blender jadi ±150 frame, lalu frame-nya diputar sesuai scroll (seperti halaman produk Apple). Visualnya paling halus, tapi file besar, dan setiap perubahan harus render ulang. Benda di meja tidak bisa diklik.</p></div>
+  </div>
+  <p class="read muted">Selain adegan: HTML/CSS/JS statis, GSAP + ScrollTrigger, deploy ke Vercel/Netlify, og:image untuk link IG/WhatsApp.</p>
+</section>
+
+<section class="block" id="aset">
+  <div class="label">08 · Aset</div>
+  <div class="grid-2">
+    <div class="note"><h3>Dari Figma</h3><ul class="clean"><li>Warna & bentuk acuan benda: kamera, toolbox, cutter, pensil, film, selotip, cutting mat.</li><li>Layar mid-fi: Create Roll, Invite, Kamera (untuk layar HP di meja).</li><li>Foto tim (untuk polaroid, isi scrapbook, buku contoh).</li><li>Tulisan tangan "coming soon".</li></ul></div>
+    <div class="note"><h3>Perlu dibuat / dari tim</h3><ul class="clean"><li>Model 3D benda meja (jika opsi A/B), atau render (opsi C).</li><li>Logo final (sementara placeholder).</li><li>8–12 foto hasil filter kamera rèlic.</li><li>3–4 halaman scrapbook contoh.</li></ul></div>
+  </div>
+</section>
+
+<section class="block" id="lanjut">
+  <div class="label">09 · Langkah berikutnya</div>
+  <ol class="steps">
+    <li><div><b>Setujui alur 8 shot + copy.</b></div></li>
+    <li><div><b>Cara 3D: A · Three.js</b> (sudah dipilih). Tinggal tentukan siapa yang membuat modelnya.</div></li>
+    <li><div><b>Prototipe kasar dulu</b>: kotak-kotak 3D sederhana (tanpa detail) untuk menguji jalur kamera dan rasa scroll di HP & laptop.</div></li>
+    <li><div><b>Ganti dengan model asli</b>, tambahkan aksi tiap shot, catatan, dan fallback gambar diam.</div></li>
+    <li><div><b>Cek & rapikan</b>: semua ukuran layar, Reduce motion, kecepatan, review gerak, lalu deploy.</div></li>
+  </ol>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var K=[
+    {rx:62,s:.82,fx:320,fy:150,fz:70},
+    {rx:38,s:1.45,fx:150,fy:240,fz:0},
+    {rx:0,s:2.0,fx:131,fy:241,fz:0},
+    {rx:0,s:1.8,fx:250,fy:100,fz:0},
+    {rx:14,s:1.8,fx:500,fy:110,fz:0},
+    {rx:0,s:1.55,fx:370,fy:235,fz:0},
+    {rx:84,s:1.35,fx:300,fy:0,fz:150},
+    {rx:62,s:.82,fx:320,fy:150,fz:70}
+  ];
+  var N=[
+    ["Shot 1 · establishing","Shoot together. Scrapbook together.","A shared disposable camera for your friend group."],
+    ["Shot 2 · the problem","Hundreds of photos. Never looked at together.","Split across camera rolls and group chats."],
+    ["Shot 3 · 01","Create a roll.","Name it and pick 24, 36, 48 or 72 shots."],
+    ["Shot 4 · 02","Invite your circle.","Share the roll code. Friends join in a tap."],
+    ["Shot 5 · 03","Shoot. No peeking.","Nothing shows until the last frame."],
+    ["Shot 6 · 04","Reveal & scrapbook together.","Everyone makes a page."],
+    ["Shot 7 · shelf","Every hangout gets a spine.","Finished books live on your profile shelf."],
+    ["Shot 8 · bookend","coming soon","rèlic lands on the App Store soon."]
+  ];
+  var SCR=["camera roll","camera roll","Create Roll\nBali '27\n24·36·48·72","Room\nN4B13L","Camera","Editor","",""];
+  var stage=document.getElementById('stage'),fit=document.getElementById('fit'),world=document.getElementById('world'),wall=document.getElementById('wall');
+  var scrub=document.getElementById('scrub'),pct=document.getElementById('pct'),cnt=document.getElementById('cnt'),scr=document.getElementById('scr');
+  var pk=document.getElementById('pk'),pt=document.getElementById('pt'),ps=document.getElementById('ps'),shots=document.getElementById('shots');
+  var last=-1;
+  function ease(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2}
+  function lerp(a,b,t){return a+(b-a)*t}
+  function fitScale(){var w=stage.clientWidth,h=stage.clientHeight;fit.style.setProperty('--k',Math.min(w/700,h/470,1.25).toFixed(3))}
+  function render(v){
+    var t=Math.min(v/100,7),i=Math.min(Math.floor(t),6),f=t-i;
+    if(t>=7){i=6;f=1}
+    var e=f<.4?0:ease((f-.4)/.6);
+    var a=K[i],b=K[i+1],c={};
+    for(var k in a)c[k]=lerp(a[k],b[k],e);
+    world.style.transform='scale('+c.s+') rotateX('+c.rx+'deg) translate3d('+(320-c.fx)+'px,'+(180-c.fy)+'px,'+(-c.fz)+'px)';
+    wall.style.opacity=Math.max(0,Math.min(1,(c.rx-12)/25));
+    var shot=Math.min(7,Math.round(t-0.1+0.1)); shot=e>.5?i+1:i;
+    stage.classList.toggle('shelved',t>5.6);
+    stage.classList.toggle('on',t>6.5);
+    cnt.textContent=t>4.5?'08':'09';
+    if(shot!==last){
+      last=shot;pk.textContent=N[shot][0];pt.textContent=N[shot][1];ps.textContent=N[shot][2];
+      if(SCR[shot])scr.textContent=SCR[shot];
+      Array.prototype.forEach.call(shots.children,function(b,j){b.setAttribute('aria-pressed',j===shot?'true':'false')});
+    }
+    pct.textContent=Math.round(v/7)+'%';
+  }
+  N.forEach(function(n,j){var b=document.createElement('button');b.type='button';b.textContent=(j+1)+'';b.setAttribute('aria-label','Shot '+(j+1));b.addEventListener('click',function(){go(j*100)});shots.appendChild(b)});
+  var raf=null;
+  function go(target){
+    var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var start=+scrub.value,d=target-start;if(raf)cancelAnimationFrame(raf);
+    if(reduce||!d){scrub.value=target;render(target);return}
+    var t0=null,dur=Math.min(1600,300+Math.abs(d)*4);
+    function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur),v=start+d*ease(p);scrub.value=v;render(v);if(p<1)raf=requestAnimationFrame(step)}
+    raf=requestAnimationFrame(step);
+  }
+  scrub.addEventListener('input',function(){if(raf)cancelAnimationFrame(raf);render(+scrub.value)});
+  window.addEventListener('resize',fitScale);
+  scrub.value=0;fitScale();render(0);
+})();
+</script>
